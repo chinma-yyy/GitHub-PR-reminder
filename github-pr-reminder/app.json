@@ -1,0 +1,15 @@
+{
+    "id": "cf9ed383-43a2-4a0e-9641-6f2761f54a04",
+    "version": "0.0.1",
+    "requiredApiVersion": "^1.4.0",
+    "iconFile": "icon.png",
+    "author": {
+        "name": "Chinmay Shewale",
+        "homepage": "www.chinmayyy.tech",
+        "support": "www.chinmayyy.tech"
+    },
+    "name": "GitHub PR reminder",
+    "nameSlug": "github-pr-reminder",
+    "classFile": "GitHubPrReminderApp.ts",
+    "description": "Basic skeleton of app"
+}
