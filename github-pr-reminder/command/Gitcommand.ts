@@ -8,16 +8,17 @@ import {
     ISlashCommand,
     SlashCommandContext,
 } from "@rocket.chat/apps-engine/definition/slashcommands";
+import { GitHubPrReminderApp } from "../GitHubPrReminderApp";
 import { OncereminderModal } from "../modal/Oncereminder";
 import { RecurringreminderModal } from "../modal/Recurringreminder";
 import { ReminderoptionModal } from "../modal/Reminderoptions";
 import { ReplinkModal } from "../modal/Repolink";
 export class Gitcommand implements ISlashCommand {
-    public constructor(private readonly app: Gitcommand) {}
     public command = "git";
     public i18nDescription = "Skeleton app for github pr reminder app";
     public providesPreview = false;
-    public i18nParamsExample = "";
+    public i18nParamsExample = "marathi";
+    constructor(private readonly app: GitHubPrReminderApp) {}
 
     public async executor(
         context: SlashCommandContext,
@@ -41,9 +42,11 @@ export class Gitcommand implements ISlashCommand {
             }
             case "reminder": {
                 // Show modals for the reminder
-                if (param2 === "once" || "o") {
+                let modal;
+                console.log(param2);
+                if (param2 === "once") {
                     let data;
-                    await OncereminderModal(
+                    modal = await OncereminderModal(
                         data,
                         modify,
                         persis,
@@ -51,9 +54,9 @@ export class Gitcommand implements ISlashCommand {
                         http,
                         context
                     );
-                } else if (param2 === "recurring" || "r") {
+                } else if (param2 === "recurring") {
                     let data;
-                    await RecurringreminderModal(
+                    modal = await RecurringreminderModal(
                         data,
                         modify,
                         persis,
@@ -62,7 +65,7 @@ export class Gitcommand implements ISlashCommand {
                         context
                     );
                 } else {
-                    await ReminderoptionModal(
+                    modal = await ReminderoptionModal(
                         modify,
                         persis,
                         read,
@@ -70,6 +73,10 @@ export class Gitcommand implements ISlashCommand {
                         context
                     );
                 }
+                const triggerId = context.getTriggerId()!;
+                await modify
+                    .getUiController()
+                    .openModalView(modal, { triggerId }, context.getSender());
                 break;
             }
             case "help":
